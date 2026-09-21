@@ -1,8 +1,9 @@
 {
-  "name": "A LAB",
+  "name": "A LAB - Engineered by AHSAN",
   "short_name": "A LAB",
-  "description": "Civil Engineering Surveying Bearing Visualizer & Lab. Engineered by AHSAN. Gratitude to Setu Sir.",
+  "description": "Civil Engineering Bearing & Surveying Visualizer. Gratitude to Setu Sir.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#030712",
   "theme_color": "#030712",
