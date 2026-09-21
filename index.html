@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>A LAB • Engineered by AHSAN</title>
+  <meta name="theme-color" content="#030712" />
+  <meta name="description" content="A LAB - Professional Surveying & Bearing Precision Lab. Engineered by AHSAN." />
+
+  <!-- PWA Setup -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/854/854878.png" />
+
+  <style>
+    :root {
+      --bg-main: #030712;
+      --card-bg: #0b0f19;
+      --card-inner: #111827;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-wcb: #38bdf8;
+      --accent-rb: #fbbf24;
+      --accent-fb: #10b981;
+      --accent-bb: #f43f5e;
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; scroll-behavior: smooth; }
+    body { background-color: var(--bg-main); color: var(--text-white); min-height: 100vh; overflow-x: hidden; }
+
+    /* Top Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .brand-avatar {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; color: #030712; font-size: 19px;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+    .brand-name { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
+    .brand-sub { font-size: 10.5px; font-weight: 700; color: var(--accent-rb); letter-spacing: 1px; text-transform: uppercase; }
+
+    .nav-actions { display: flex; gap: 8px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 9px 15px; border-radius: 9px; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: 0.2s; border: none;
+    }
+    .btn-download-apk {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      box-shadow: 0 3px 14px rgba(16, 185, 129, 0.3);
+    }
+    .btn-download-apk:hover { transform: translateY(-1.5px); }
+    .btn-pwa {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-wcb);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .btn-pwa:hover { background: rgba(56, 189, 248, 0.2); }
+
+    /* Hero */
+    .hero {
+      padding: 35px 20px 25px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 0%, #172554 0%, var(--bg-main) 70%);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border); border-radius: 999px;
+      font-size: 12px; font-weight: 600; color: var(--accent-wcb);
+      margin-bottom: 14px;
+    }
+    .hero-title {
+      font-size: clamp(28px, 5.5vw, 46px);
+      font-weight: 900; line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 50%, var(--accent-wcb) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .hero-engineer {
+      font-size: 13.5px; font-weight: 700; color: var(--accent-rb);
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .hero-desc {
+      font-size: 14px; color: var(--text-muted); max-width: 540px; margin: 0 auto 20px; line-height: 1.5;
+    }
+    .hero-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
+    /* Main Container */
+    .app-container {
+      max-width: 1120px; margin: 20px auto; padding: 0 16px;
+      display: grid; grid-template-columns: 1fr; gap: 20px;
+    }
+    @media (min-width: 880px) {
+      .app-container { grid-template-columns: 1.12fr 0.88fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px; padding: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    /* 4-HUD Panels */
+    .hud-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 10px; margin-bottom: 18px;
+    }
+    .hud-box {
+      background: var(--card-inner); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .hud-tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; }
+    .hud-number { font-size: 19px; font-weight: 800; font-family: monospace; }
+
+    .tag-wcb { color: var(--accent-wcb); }
+    .tag-rb { color: var(--accent-rb); }
+    .tag-fb { color: var(--accent-fb); }
+    .tag-bb { color: var(--accent-bb); }
+
+    /* Compass Canvas */
+    .compass-wrapper {
+      position: relative; width: 100%; aspect-ratio: 1; max-width: 410px; margin: 0 auto; touch-action: none;
+    }
+    canvas { width: 100%; height: 100%; border-radius: 50%; display: block; cursor: crosshair; }
+
+    /* Stepper & Slider Controls */
+    .control-block { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .slider-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
+    input[type="range"] {
+      width: 100%; accent-color: var(--accent-wcb); height: 6px; background: #1f293d; border-radius: 4px; cursor: pointer;
+    }
+    .quadrant-pills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .pill {
+      background: var(--card-inner); border: 1px solid var(--card-border);
+      color: var(--text-muted); padding: 7px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center;
+    }
+    .pill:hover { background: #1e293b; color: #fff; }
+
+    /* Right Side Calculation Suite */
+    .calc-suite { display: flex; flex-direction: column; gap: 14px; }
+    .box-step {
+      background: var(--card-inner); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 15px; font-size: 13px; line-height: 1.6;
+    }
+    .box-title { font-size: 13.5px; font-weight: 700; color: var(--accent-rb); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+    .row-math { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+    .row-math:last-child { border-bottom: none; }
+
+    /* Traverse & Declination Tabs */
+    .tabs-nav { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab-btn {
+      flex: 1; padding: 9px; border-radius: 8px; background: var(--card-inner);
+      border: 1px solid var(--card-border); color: var(--text-muted); font-size: 12px; font-weight: 700; cursor: pointer; text-align: center;
+    }
+    .tab-btn.active { background: rgba(56, 189, 248, 0.12); color: var(--accent-wcb); border-color: rgba(56, 189, 248, 0.4); }
+
+    /* Modal for APK download / install */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-card {
+      background: #0d1322; border: 1px solid var(--card-border); border-radius: 18px;
+      padding: 24px; max-width: 440px; width: 100%; text-align: center;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border); padding: 30px 20px;
+      text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <nav>
+    <div class="brand-wrap">
+      <div class="brand-avatar">A</div>
+      <div>
+        <div class="brand-name">A LAB</div>
+        <div class="brand-sub">Engineered by AHSAN</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="A-LAB.apk" class="btn btn-download-apk" id="apkDownloadTop" download="A-LAB.apk">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download APK</span>
+      </a>
+      <button class="btn btn-pwa" id="pwaInstallBtn">
+        <span>Install App</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-badge">⚙️ Civil Surveying Engine</div>
+    <h1 class="hero-title">A LAB Visualizer</h1>
+    <div class="hero-engineer">Engineered by AHSAN</div>
+    <p class="hero-desc">
+      WCB, Reduced Bearing (RB), Fore Bearing এবং Back Bearing একসাথে লাইভ কম্পাস ডায়ালে ঘুরিয়ে পরীক্ষা করুন।
+    </p>
+    <div class="hero-buttons">
+      <a href="A-LAB.apk" class="btn btn-download-apk" style="padding: 11px 22px; font-size: 14px;" download="A-LAB.apk">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download Official Android App (.apk)</span>
+      </a>
+      <a href="#labWorkspace" class="btn btn-pwa" style="padding: 11px 18px;">
+        <span>Open Compass Dial</span> ↓
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="app-container" id="labWorkspace">
+    
+    <!-- Left: Compass Dial & Controls -->
+    <div class="card">
+      <div class="hud-grid">
+        <div class="hud-box">
+          <div class="hud-tag tag-wcb">Whole Circle (WCB)</div>
+          <div class="hud-number" id="valWCB">45°00'</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-tag tag-rb">Reduced (RB)</div>
+          <div class="hud-number" id="valRB">N 45°00' E</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-tag tag-fb">Fore Bearing (FB)</div>
+          <div class="hud-number" id="valFB">45°00'</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-tag tag-bb">Back Bearing (BB)</div>
+          <div class="hud-number" id="valBB">225°00'</div>
+        </div>
+      </div>
+
+      <div class="compass-wrapper">
+        <canvas id="compassCanvas"></canvas>
+      </div>
+
+      <div class="control-block">
+        <div class="slider-info">
+          <span>কম্পাস কাঁটা নিয়ন্ত্রণ (Angle Control)</span>
+          <span id="sliderDisplay" style="color:var(--accent-wcb);">45.0°</span>
+        </div>
+        <input type="range" id="angleSlider" min="0" max="360" step="0.25" value="45" />
+
+        <div class="quadrant-pills">
+          <button class="pill" onclick="setFixedAngle(45)">NE (45°)</button>
+          <button class="pill" onclick="setFixedAngle(135)">SE (135°)</button>
+          <button class="pill" onclick="setFixedAngle(225)">SW (225°)</button>
+          <button class="pill" onclick="setFixedAngle(315)">NW (315°)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Derivations & Advanced Modes -->
+    <div class="card calc-suite">
+      <div class="tabs-nav">
+        <button class="tab-btn active" id="tabBearingBtn" onclick="switchTab('bearing')">বেয়ারিং সূত্র</button>
+        <button class="tab-btn" id="tabTraverseBtn" onclick="switchTab('traverse')">Traverse কোণ</button>
+        <button class="tab-btn" id="tabDeclinationBtn" onclick="switchTab('declination')">ডিক্লিনেশন</button>
+      </div>
+
+      <!-- Tab 1: Bearing Logic -->
+      <div id="tabBearing">
+        <div class="box-step">
+          <div class="box-title">
+            <span>চতুর্ভাগ ও RB রূপান্তর</span>
+            <span id="stepQuadBadge" style="color:var(--accent-rb);">NE (১ম চতুর্ভাগ)</span>
+          </div>
+          <div class="row-math">
+            <span>সূত্র:</span>
+            <code id="stepFormula" style="color:var(--accent-wcb);">RB = WCB</code>
+          </div>
+          <div class="row-math">
+            <span>হিসাবকৃত মান:</span>
+            <strong id="stepCalculatedRB" style="color:var(--accent-rb);">N 45°00' E</strong>
+          </div>
+        </div>
+
+        <div class="box-step" style="margin-top:12px;">
+          <div class="box-title">Fore & Back Bearing সম্পর্ক</div>
+          <div class="row-math">
+            <span>শর্ত:</span>
+            <span id="stepBBCondition">FB &lt; 180° তাই (+ 180°)</span>
+          </div>
+          <div class="row-math">
+            <span>সূত্র:</span>
+            <code>BB = FB ± 180°</code>
+          </div>
+          <div class="row-math">
+            <span>Back Bearing (Line BA):</span>
+            <strong id="stepBBResult" style="color:var(--accent-bb);">225°00'</strong>
+          </div>
+        </div>
+
+        <div class="box-step" style="margin-top:12px; border-left: 3px solid var(--accent-wcb);">
+          <div style="font-weight:700; color:#fff; margin-bottom:4px;">কালার কোড:</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height: 1.7;">
+            • <b style="color:var(--accent-wcb);">নীল আর্ক:</b> Whole Circle Bearing (WCB)<br />
+            • <b style="color:var(--accent-rb);">হলুদ আর্ক:</b> Reduced Quadrant Bearing (RB)<br />
+            • <b style="color:var(--accent-fb);">সবুজ রেখা:</b> Line AB-এর ফোর বেয়ারিং<br />
+            • <b style="color:var(--accent-bb);">লাল ড্যাশড রেখা:</b> Line BA-এর ব্যাক বেয়ারিং
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Included Angle (Traverse) -->
+      <div id="tabTraverse" style="display:none;">
+        <div class="box-step">
+          <div class="box-title">Included Angle (স্টেশন B-তে কোণ ABC)</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div>
+              <label style="font-size:11px; color:var(--text-muted);">Line AB (BB):</label>
+              <input type="number" id="traverseAB" value="225" style="width:100%; background:#1f293d; border:1px solid var(--card-border); color:#fff; padding:6px; border-radius:6px;" oninput="calcTraverse()">
+            </div>
+            <div>
+              <label style="font-size:11px; color:var(--text-muted);">Line BC (FB):</label>
+              <input type="number" id="traverseBC" value="110" style="width:100%; background:#1f293d; border:1px solid var(--card-border); color:#fff; padding:6px; border-radius:6px;" oninput="calcTraverse()">
+            </div>
+          </div>
+          <div class="row-math">
+            <span>Included Angle (∠B):</span>
+            <strong id="traverseResult" style="color:var(--accent-fb);">115°00'</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Declination -->
+      <div id="tabDeclination" style="display:none;">
+        <div class="box-step">
+          <div class="box-title">ম্যাগনেটিক ডিক্লিনেশন ক্যালকুলেটর</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div>
+              <label style="font-size:11px; color:var(--text-muted);">Magnetic Bearing:</label>
+              <input type="number" id="mbInput" value="45" style="width:100%; background:#1f293d; border:1px solid var(--card-border); color:#fff; padding:6px; border-radius:6px;" oninput="calcDeclination()">
+            </div>
+            <div>
+              <label style="font-size:11px; color:var(--text-muted);">Declination (East + / West -):</label>
+              <input type="number" id="decInput" value="2.5" step="0.1" style="width:100%; background:#1f293d; border:1px solid var(--card-border); color:#fff; padding:6px; border-radius:6px;" oninput="calcDeclination()">
+            </div>
+          </div>
+          <div class="row-math">
+            <span>True Bearing (TB):</span>
+            <strong id="tbResult" style="color:var(--accent-wcb);">47°30'</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p><strong>A LAB</strong> • Civil Surveying Precision Suite</p>
+    <div style="color:var(--accent-rb); font-weight:700; margin-top:5px;">Engineered by AHSAN</div>
+  </footer>
+
+  <script>
+    // --- Canvas & Core Bearing Math ---
+    const canvas = document.getElementById('compassCanvas');
+    const ctx = canvas.getContext('2d');
+    const slider = document.getElementById('angleSlider');
+    const sliderDisplay = document.getElementById('sliderDisplay');
+
+    const valWCB = document.getElementById('valWCB');
+    const valRB = document.getElementById('valRB');
+    const valFB = document.getElementById('valFB');
+    const valBB = document.getElementById('valBB');
+
+    const stepQuadBadge = document.getElementById('stepQuadBadge');
+    const stepFormula = document.getElementById('stepFormula');
+    const stepCalculatedRB = document.getElementById('stepCalculatedRB');
+    const stepBBCondition = document.getElementById('stepBBCondition');
+    const stepBBResult = document.getElementById('stepBBResult');
+
+    let currentAngle = 45;
+    let isDragging = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function formatDMS(deg) {
+      const d = Math.floor(deg);
+      const m = Math.round((deg - d) * 60);
+      return `${String(d).padStart(2, '0')}°${String(m).padStart(2, '0')}'`;
+    }
+
+    function calculateRB(wcb) {
+      const norm = ((wcb % 360) + 360) % 360;
+      if (norm >= 0 && norm < 90) {
+        return { quad: "NE (১ম চতুর্ভাগ)", formula: "RB = WCB", text: `N ${formatDMS(norm)} E`, ref: 'N', angle: norm };
+      } else if (norm >= 90 && norm < 180) {
+        const theta = 180 - norm;
+        return { quad: "SE (২য় চতুর্ভাগ)", formula: "RB = 180° - WCB", text: `S ${formatDMS(theta)} E`, ref: 'S', angle: theta };
+      } else if (norm >= 180 && norm < 270) {
+        const theta = norm - 180;
+        return { quad: "SW (৩য় চতুর্ভাগ)", formula: "RB = WCB - 180°", text: `S ${formatDMS(theta)} W`, ref: 'S', angle: theta };
+      } else {
+        const theta = 360 - norm;
+        return { quad: "NW (৪র্থ চতুর্ভাগ)", formula: "RB = 360° - WCB", text: `N ${formatDMS(theta)} W`, ref: 'N', angle: theta };
+      }
+    }
+
+    function updateLogic(angle) {
+      const norm = ((angle % 360) + 360) % 360;
+      valWCB.textContent = formatDMS(norm);
+      valFB.textContent = formatDMS(norm);
+
+      const rb = calculateRB(norm);
+      valRB.textContent = rb.text;
+      stepQuadBadge.textContent = rb.quad;
+      stepFormula.textContent = rb.formula;
+      stepCalculatedRB.textContent = rb.text;
+
+      let bb = norm < 180 ? norm + 180 : norm - 180;
+      stepBBCondition.textContent = norm < 180 ? "FB < 180° তাই (+ 180°)" : "FB ≥ 180° তাই (- 180°)";
+      valBB.textContent = formatDMS(bb);
+      stepBBResult.textContent = formatDMS(bb);
+      sliderDisplay.textContent = `${norm.toFixed(1)}°`;
+    }
+
+    function draw() {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = Math.min(cx, cy) - 18;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Dial Outer
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+      ctx.fillStyle = '#080c16';
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#1e293b';
+      ctx.stroke();
+
+      // Cardinal Axes
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - r + 10); ctx.lineTo(cx, cy + r - 10);
+      ctx.moveTo(cx - r + 10, cy); ctx.lineTo(cx + r - 10, cy);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Labels N, S, E, W
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#f43f5e'; ctx.fillText('N', cx, cy - r + 22);
+      ctx.fillStyle = '#94a3b8'; ctx.fillText('S', cx, cy + r - 22);
+      ctx.fillText('E', cx + r - 22, cy);
+      ctx.fillText('W', cx - r + 22, cy);
+
+      const rad = (currentAngle - 90) * (Math.PI / 180);
+      const oppRad = (currentAngle + 90) * (Math.PI / 180);
+
+      // WCB Arc (Blue)
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.45, -Math.PI / 2, rad, false);
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+
+      // Back Bearing Ray (Red Dashed)
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(oppRad) * (r * 0.78), cy + Math.sin(oppRad) * (r * 0.78));
+      ctx.strokeStyle = '#f43f5e';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([6, 6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Fore Bearing Ray (Green Arrow)
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      const tipX = cx + Math.cos(rad) * (r * 0.85);
+      const tipY = cy + Math.sin(rad) * (r * 0.85);
+      ctx.lineTo(tipX, tipY);
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Drag Handle
+      ctx.beginPath();
+      ctx.arc(tipX, tipY, 7.5, 0, 2 * Math.PI);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Center Station
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+    }
+
+    function setBearingFromCoords(x, y) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      let deg = Math.atan2(y - cy, x - cx) * (180 / Math.PI) + 90;
+      if (deg < 0) deg += 360;
+      currentAngle = deg;
+      slider.value = deg;
+      updateLogic(currentAngle);
+      draw();
+    }
+
+    canvas.addEventListener('mousedown', (e) => { isDragging = true; setBearingFromCoords(e.clientX, e.clientY); });
+    window.addEventListener('mousemove', (e) => { if (isDragging) setBearingFromCoords(e.clientX, e.clientY); });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    canvas.addEventListener('touchstart', (e) => { isDragging = true; setBearingFromCoords(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+    window.addEventListener('touchmove', (e) => { if (isDragging) { e.preventDefault(); setBearingFromCoords(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+    slider.addEventListener('input', (e) => {
+      currentAngle = parseFloat(e.target.value);
+      updateLogic(currentAngle);
+      draw();
+    });
+
+    function setFixedAngle(a) {
+      currentAngle = a;
+      slider.value = a;
+      updateLogic(a);
+      draw();
+    }
+
+    // Tabs Switcher
+    function switchTab(t) {
+      document.getElementById('tabBearing').style.display = t === 'bearing' ? 'block' : 'none';
+      document.getElementById('tabTraverse').style.display = t === 'traverse' ? 'block' : 'none';
+      document.getElementById('tabDeclination').style.display = t === 'declination' ? 'block' : 'none';
+
+      document.getElementById('tabBearingBtn').className = 'tab-btn ' + (t === 'bearing' ? 'active' : '');
+      document.getElementById('tabTraverseBtn').className = 'tab-btn ' + (t === 'traverse' ? 'active' : '');
+      document.getElementById('tabDeclinationBtn').className = 'tab-btn ' + (t === 'declination' ? 'active' : '');
+    }
+
+    function calcTraverse() {
+      const ab = parseFloat(document.getElementById('traverseAB').value) || 0;
+      const bc = parseFloat(document.getElementById('traverseBC').value) || 0;
+      let angle = bc - ab;
+      if (angle < 0) angle += 360;
+      document.getElementById('traverseResult').textContent = formatDMS(angle);
+    }
+
+    function calcDeclination() {
+      const mb = parseFloat(document.getElementById('mbInput').value) || 0;
+      const dec = parseFloat(document.getElementById('decInput').value) || 0;
+      let tb = (mb + dec + 360) % 360;
+      document.getElementById('tbResult').textContent = formatDMS(tb);
+    }
+
+    // --- PWA Direct Trigger ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('pwaInstallBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-flex';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') installBtn.style.display = 'none';
+        deferredPrompt = null;
+      } else {
+        alert('অ্যাপটি ইনস্টল করতে:\n• Android Chrome: ৩-ডট (⋮) চাপ দিয়ে "Install app" বা "Add to Home screen" নির্বাচন করুন।\n• Safari: Share বাটনে ট্যাপ করে "Add to Home Screen" চাপুন।');
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    window.onload = () => {
+      resizeCanvas();
+      updateLogic(currentAngle);
+    };
+  </script>
+</body>
+</html>
